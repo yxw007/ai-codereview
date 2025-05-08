@@ -1,8 +1,7 @@
 {
-  "name": "ai-codereview",
+  "name": "ai-code-review",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@llama-node/core": "^0.1.6",
-    "@llama-node/llama-cpp": "^0.1.6"
+    "node-llama-cpp": "^3.7.0"
   }
 }
