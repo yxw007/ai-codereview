@@ -1,8 +1,23 @@
-import { Llama } from "node-llama-cpp";
+import { fileURLToPath } from "url";
+import path from "path";
+import { getLlama, LlamaChatSession } from "node-llama-cpp";
 
-const instance = new Llama({
-	modelPath: "../model/TinyLlama-1.1B-intermediate-step-1431k-3T-code_contests_v0.15.Q2_K.gguf",
-	gpuLayers: 0 // 强制CPU模式
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const modelPath = path.join(__dirname, "../models/qwen2.5-coder-7b-instruct-q2_k.gguf").replaceAll("\\", "/");
+console.log("Model path: " + modelPath);
+
+const llama = await getLlama({
+	gpuLayers: 0
+});
+const model = await llama.loadModel({
+	modelPath,
+});
+const context = await model.createContext({
+	contextSize: { max: 8096 }
+});
+const session = new LlamaChatSession({
+	contextSequence: context.getSequence()
 });
 
 export async function codeReview(diff) {
@@ -11,16 +26,16 @@ export async function codeReview(diff) {
   1. 安全漏洞（如SQL注入、XSS）
   2. 内存泄漏/死锁风险
   3. 未处理的异常
+	回答请只使用中文，并给出建议和修改示例
   <</SYS>>
   请分析以下代码变更：\n${diff}
   [/INST]`;
 
-	const result = await instance.infer({
-		prompt,
+	const result = await session.prompt(prompt, {
 		maxTokens: 200,
-		temperature: 0.1
+		temperature: 0
 	});
 
-	return result.text;
+	return result;
 }
 
