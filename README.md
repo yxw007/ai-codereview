@@ -1,7 +1,25 @@
 # AI-CodeReview
 
+## Create Sample project
 ```bash
-node src/index.js "/e/Project/test-repo" "b4a5fde0f2de131433fcb98f141d93c1945c2529" "f39f5bfc541af505c484f7b29143b2182b690e83"
+cd ..
+mkdir test-repo
+cd test-repo
+echo "console.log('hello')" > main.js
+git init
+git add .
+git commit -m "init project"
+echo "" >> main.js
+echo "function query(input){" >> main.js
+echo "    return \`SELECT * FROM users WHERE id = \${input}\`;" >> main.js
+echo "}" >> main.js
+git add .
+git commit -m "add query"
+```
+
+## Test run
+```bash
+node src/index.js "/e/Project/test-repo" "6146ef88ddac18ccf501e7039fdc17b01f64fb3b" "3abee20ecb6b098580c17da750d49b8778b794d2"
 ```
 
 ## Resource
